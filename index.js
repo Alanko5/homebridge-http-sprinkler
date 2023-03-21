@@ -15,7 +15,7 @@ function HttpSprinkler(log, config) {
   this.log = log;
 
   this.name = config.name || "HTTP Sprinkler";
-  this.icon = config.icon || 0
+  this.icon = config.icon || 0;
 
   this.onUrl = config.onUrl;
   this.offUrl = config.offUrl;
@@ -56,7 +56,7 @@ function HttpSprinkler(log, config) {
         } else {
           done(null, body);
         }
-      })
+      });
     }, {
       interval: that.pollingInterval,
       eventName: "statuspoll"
@@ -104,11 +104,11 @@ HttpSprinkler.prototype = {
       },
       function(error, response, responseBody) {
         if (callbackMethod) {
-          callbackMethod(error, response, responseBody)
+          callbackMethod(error, response, responseBody);
         } else {
           //this.log("callbackMethod not defined!");
         }
-      })
+      });
   },
 
 
@@ -170,7 +170,7 @@ HttpSprinkler.prototype = {
       if (error) {
         that.log("HTTP set status function failed %s", error.message);
       }
-    }.bind(this))
+    }.bind(this));
 
     this.log("HTTP power function succeeded!");
     this.valveService.getCharacteristic(Characteristic.InUse).updateValue(inuse);
@@ -206,7 +206,7 @@ HttpSprinkler.prototype = {
       if (error) {
         that.log("HTTP set status function failed %s", error.message);
       }
-    }.bind(this))
+    }.bind(this));
 
     // InUse characteristic is set with the polling mechanism
 
@@ -216,7 +216,7 @@ HttpSprinkler.prototype = {
 
 
   setDurationTime: function(data, callback) {
-    this.log("Valve Time Duration Set to: " + data.newValue + " seconds")
+    this.log("Valve Time Duration Set to: " + data.newValue + " seconds");
 
     if (this.valveService.getCharacteristic(Characteristic.InUse).value) {
       this.valveService.getCharacteristic(Characteristic.RemainingDuration).updateValue(data.newValue);
@@ -281,8 +281,8 @@ HttpSprinkler.prototype = {
       //Status polling
       case "once":
         this.log("Check status: once");
-        var powerState = this.getPowerState.bind(this)
-        var powerStateInt = 0
+        var powerState = this.getPowerState.bind(this);
+        var powerStateInt = 0;
 
         this.valveService
           .getCharacteristic(Characteristic.Active)
@@ -290,9 +290,9 @@ HttpSprinkler.prototype = {
           .on('get', powerState);
 
         if (powerState) {
-          powerStateInt = 1
+          powerStateInt = 1;
         } else {
-          powerStateInt = 0
+          powerStateInt = 0;
         }
 
         this.valveService.getCharacteristic(Characteristic.InUse).updateValue(powerStateInt);
@@ -303,17 +303,17 @@ HttpSprinkler.prototype = {
         this.valveService
           .getCharacteristic(Characteristic.Active)
           .on('get', function(callback) {
-            callback(null, that.statusOn)
+            callback(null, that.statusOn);
           })
 
-          .on('set', this.setPowerStatePolling.bind(this))
+          .on('set', this.setPowerStatePolling.bind(this));
 
         break;
       default:
         that.log("Check status: default");
         this.valveService
           .getCharacteristic(Characteristic.Active)
-          .on('set', this.setPowerState.bind(this))
+          .on('set', this.setPowerState.bind(this));
 
         break;
     }
@@ -330,8 +330,8 @@ HttpSprinkler.prototype = {
 
       this.valveService.getCharacteristic(Characteristic.RemainingDuration)
         .on('change', (data) => {
-          this.log("Valve Remaining Duration changed to: " + data.newValue)
-        })
+          this.log("Valve Remaining Duration changed to: " + data.newValue);
+        });
 
       this.valveService.getCharacteristic(Characteristic.InUse)
         .on('change', this.setRemainingTime.bind(this));
