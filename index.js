@@ -25,7 +25,7 @@ function HttpSprinkler(log, config) {
   this.timeout = config.timeout || 5000;
   this.pollingInterval = config.pollingInterval || 3000;
   this.checkStatus = config.checkStatus || "no";
-  this.headers = config.headers || "{}"
+  this.headers = config.headers || "{}";
 
   this.jsonPath = config.jsonPath;
   this.onValue = config.onValue || "On";
